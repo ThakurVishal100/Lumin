@@ -5,6 +5,7 @@ import HeroSection from "./pages/student/HeroSection";
 import MainLayout from "./layout/MainLayout";
 import { createBrowserRouter } from "react-router-dom";
 import Courses from "./pages/student/Courses";
+import MyLearning from "./pages/student/MyLearning";
 
 const appRouter = createBrowserRouter([
   {
@@ -16,14 +17,22 @@ const appRouter = createBrowserRouter([
         element: (
           <>
             <HeroSection />
-            <Courses/>
+            <Courses />
           </>
         ),
       },
       {
-        path:"/login",
+        path: "/login",
         element: <Login />,
-      }
+      },
+      {
+        path: "my-learning",
+        element: <MyLearning />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
     ],
   },
 ]);
