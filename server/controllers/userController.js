@@ -88,18 +88,18 @@ export const logout = async (_, res) => {
 
 export const getUserProfile = async (req, res) => {
   try {
-    const userId=req.id;
-    const user=await User.findById(userId).select("-password");
-    if(!user){
+    const userId = req.id;
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
       return res.status(404).json({
-        success:false,
-        message:"User not found"
-      })
+        success: false,
+        message: "User not found",
+      });
     }
     return res.status(200).json({
-      success:true,
-      user
-    })
+      success: true,
+      user,
+    });
   } catch (error) {
     console.log("error on get user profile", error);
 
@@ -112,25 +112,42 @@ export const getUserProfile = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const userId=req.id;
-    const {name}=req.body;
-    const profilePhoto=req.file;
+    const userId = req.id;
+    const { name } = req.body;
+    const profilePhoto = req.file;
 
-    const user=await User.findById(userId);
-    if(!user){
+    const user = await User.findById(userId);
+    if (!user) {
       return res.status(404).json({
-        success:false,
-        message:"User not found"
-      })
+        success: false,
+        message: "User not found",
+      });
     }
+    // extract photourl of the old image from the url if it exists
+    if (user.photoUrl) {
+      const publicId = user.photoUrl.split("/").pop().split(".")[0];
+      await deleteMediaFromCloudinary(publicId);
+    }
+    // upload new image
+    const cloudResponse = await uploadMedia(profilePhoto.path);
+    const photoUrl = cloudResponse.secure_url;
 
-    const updatedData={name,photoUrl};
+    const updatedData = { name, photoUrl };
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+
   } catch (error) {
     console.log("error on update user profile", error);
     return res.status(500).json({
       success: false,
       message: "Failed to update user profile",
-    })
-    
+    });
   }
-}
+};
