@@ -8,6 +8,9 @@ import Courses from "./pages/student/Courses";
 import MyLearning from "./pages/student/MyLearning";
 import Profile from "./pages/student/Profile";
 import { Sidebar } from "lucide-react";
+import Dashboard from "./pages/admin/Dashboard";
+import EditCourse from "./pages/admin/course/EditCourse";
+
 
 const appRouter = createBrowserRouter([
   {
@@ -53,6 +56,10 @@ const appRouter = createBrowserRouter([
           {
             path:"course/create",
             element:<AddCourse/>
+          },
+          {
+            path:"course/:courseId",
+            element:<EditCourse/>
           }
         ]
       }

@@ -53,13 +53,13 @@ export const authApi = createApi({
         url: "logout",
         method: "GET",
       }),
-      async onQueryStarted(_, { _, dispatch }) {
-        try{
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
           dispatch(userLoggedOut());
-        }catch  (error) {
+        } catch (error) {
           console.log(error);
         }
-      }
+      },
     }),
     updateUser: builder.mutation({
       query: (formData) => ({

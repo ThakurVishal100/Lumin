@@ -33,6 +33,18 @@ export const getCreatorCourse = async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .json({ message: "Failed to get courses for this user" });
+      .json({ message: "Failed to get course" });
   }
 };
+
+export const updateCourse=async (req,res)=>{
+  try {
+    const {courseTitle,subTitle,description,category,courseLevel,coursePrice,courseThumbnail}=req.body;
+    
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Failed to update course" });
+  }
+}
